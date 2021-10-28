@@ -24,6 +24,12 @@ from django.contrib import messages
 import sqlite3
 from articleapp.models import OrderHistoryModel
 
+op = webdriver.ChromeOptions()
+op.binary_location = os.environ.get('GOOGLE_CHROMIUM_BIN')
+op.add_argument('--headless')
+op.add_argument('--no-sandbox')
+op.add_argument('--disable-dev-sh-usage')
+
 global ok, not_ok
 
 # ----------------------------------------------REPLACE PRODUCT IN ORDER--------------------------------------------------
@@ -302,7 +308,8 @@ def home(request):
         password = request.POST.get('Password')
         option = Options()
         option.headless = True
-        driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
+        driver = webdriver.Chrome(executable_path= os.environ.get('CHROMEDRIVER_PATH'), chrome_options=op)
+        #driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
         #driver = webdriver.Chrome(ChromeDriverManager().install())
 
         login(driver, product1, product2, request, userName, password)
