@@ -18,6 +18,7 @@ from selenium.webdriver.common.keys import Keys
 import pandas as pd
 from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.utils import ChromeType
 from selenium.webdriver.common.action_chains import ActionChains
 from django.contrib import messages
 import sqlite3
@@ -301,7 +302,8 @@ def home(request):
         password = request.POST.get('Password')
         option = Options()
         option.headless = True
-        driver = webdriver.Chrome(ChromeDriverManager().install())
+        driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
+        #driver = webdriver.Chrome(ChromeDriverManager().install())
 
         login(driver, product1, product2, request, userName, password)
         return redirect('home')
