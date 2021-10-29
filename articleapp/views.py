@@ -64,11 +64,30 @@ def replace_product_inorder(driver, product1, product2, el):
             commentFailed = False
             while commentFailed == False:
                 try:
+                    # Ici faut mettre un temps d'attente mais pas trop long, sinon ça ralentis trop mais pas trop court sinon des fois ça ne va pas charger
+                    WebDriverWait(driver, 1.5).until(EC.presence_of_element_located(
+                                (By.XPATH, "//h4[@class='modal-title'][text()[contains(.,'Alerte encours')]]")))
+                    WebDriverWait(driver, 0.5).until(EC.presence_of_element_located(
+                                                (By.XPATH, "//a[@class='close']"))).click()
+                    print("PopUp Closed")
+                except:
+                    print("There is no popup")
+                    pass
+                #popup_to_close.click()
+                print('Popup closed')
+                try:
+                    #WebDriverWait(driver, 1.5).until(EC.presence_of_element_located(
+                     #   (By.XPATH, "//h4[@class='modal-title'][text()[contains(.,'Alerte encours')]]")))
+                    #WebDriverWait(driver, 0.5).until(EC.presence_of_element_located(
+                    #    (By.XPATH, "//a[@class='close']"))).click()
+                    #print("PopUp Closed")
+
                     print("TRY")
                     WebDriverWait(driver, 10).until(EC.element_to_be_clickable(
                         (By.XPATH, "//li[@id='menu_5']/span"))).click()
                     commentFailed = True
                 except:
+                    #print("There is no popup")
                     print("FAIL COMMENT")
                     pass
             WebDriverWait(driver, 10).until(EC.visibility_of_element_located(
@@ -88,6 +107,8 @@ def isOrderInList(id, list):
 
 def product_replace(driver, product1, product2, buttons_edit, request, orders):
     hasReplaceProduct = False
+    popup_to_close =WebDriverWait(driver, 10).until(EC.presence_of_element_located(
+                                                (By.XPATH, "//*[@class='close']")))
     for i in range(len(orders)):
         if product1 in orders[i].products and product2 in orders[i].products:
             print("Les deux produits sont dans la commande")
@@ -98,9 +119,22 @@ def product_replace(driver, product1, product2, buttons_edit, request, orders):
             driver.execute_script(
                 "arguments[0].click();", orders[i].button_edit)
             driver.switch_to.window(driver.window_handles[1])
-            #if
             WebDriverWait(driver, 10).until(EC.presence_of_element_located(
                 (By.XPATH, "//*[@class='ov_hidden']")))
+
+            #if popup to close
+            try:
+                # Ici faut mettre un temps d'attente mais pas trop long, sinon ça ralentis trop mais pas trop court sinon des fois ça ne va pas charger
+                WebDriverWait(driver, 1.5).until(EC.presence_of_element_located(
+                            (By.XPATH, "//h4[@class='modal-title'][text()[contains(.,'Alerte encours')]]")))
+                WebDriverWait(driver, 0.5).until(EC.presence_of_element_located(
+                                            (By.XPATH, "//a[@class='close']"))).click()
+                print("PopUp Closed")
+            except:
+                print("There is no popup")
+                pass
+            #popup_to_close.click()
+            print('Popup closed')
             # get all the name of product which are in order
             el = driver.find_elements_by_class_name('ov_hidden')
             print("All Elements => ", el)
@@ -164,7 +198,7 @@ def parse_page(driver, product1, product2, request):
     print("Start parsing")
 
     print("En attente") #tesssssst
-    time.sleep(10)
+    time.sleep(15)
 
     for tr in tr_orders:
         td = tr.find_all('td')
@@ -277,9 +311,9 @@ def login(driver, product1, product2, request, userName, password):
         WebDriverWait(driver, 5).until(EC.element_to_be_clickable(
             (By.XPATH, '//*[@id="form_recherche_c"]/div[1]/div[1]/table/tbody/tr[3]/td[2]/div[1]/label/div'))).click()
 
-        WebDriverWait(driver, 5).until(EC.element_to_be_clickable(
+        WebDriverWait(driver, 7).until(EC.element_to_be_clickable(
             (By.XPATH, "//span[text()='Options avancées']"))).click()
-        WebDriverWait(driver, 5).until(EC.element_to_be_clickable(
+        WebDriverWait(driver, 7).until(EC.element_to_be_clickable(
             (By.XPATH, '//*[@id="form_recherche_c_advanced"]/div[2]/table/tbody/tr[2]/td[2]/div/button[1]/i'))).click()
         search_product(driver, product1, product2, request)
     except Exception as e:
