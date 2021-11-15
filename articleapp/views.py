@@ -292,13 +292,14 @@ def search_product(driver, product1, product2, request):
         messages.warning(request, e)
 
         # ----------------------------------------------LOG IN--------------------------------------------------
-
+#https://french-retro.lundimatin.biz/profil_collab/#documents_cmde_cli_recherche.php
 #  https://masada.lundimatin.biz/profil_collab/#documents_cmde_cli_recherche.php
 def login(driver, product1, product2, request, userName, password):
     try:
         driver.get(
-            'https://french-retro.lundimatin.biz/profil_collab/#documents_cmde_cli_recherche.php')
+            'https://masada.lundimatin.biz/profil_collab/#documents_cmde_cli_recherche.php')
         driver.maximize_window()
+        print('masada')
         WebDriverWait(driver, 5).until(EC.element_to_be_clickable(
             (By.XPATH, '//*[@id="login"]'))).send_keys(userName)
         driver.find_element_by_id('code').send_keys(password)

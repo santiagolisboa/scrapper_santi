@@ -1,0 +1,6 @@
+SELECT * FROM articleapp_orderhistorymodel
+WHERE initial IN ('AVA-M9-S')
+ORDER BY ID ASC
+
+SELECT * FROM articleapp_orderhistorymodel
+WHERE final IN ('AVA-M9-S')
